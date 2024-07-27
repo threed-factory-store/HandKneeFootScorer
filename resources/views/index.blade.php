@@ -112,6 +112,12 @@
             <x-rules/>
         </div>
 
+        <div class="text-end p-3">
+            <em class="small">
+                <a class="link-secondary" href="{{env("GITHUB_URL")}}" target="_blank">This web site is powered by open source!</a>
+            </em>
+        </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 let tabNumber = GetCookie("TabNumber", 0)
