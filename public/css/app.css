@@ -1,0 +1,20 @@
+@media (max-width: 600px) {
+    .container {
+      padding:0;
+      margin:0;
+    }
+
+    body {
+      padding:0;
+    }
+
+    .btn {
+        padding: var(--bs-btn-padding-y) 0.25rem;
+    }
+
+    .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom:0;
+    }
+}

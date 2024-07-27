@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -d /home/wzjzus5/handkneefoot.com/handkneefoot ]
+then
+    cd /home/wzjzus5/handkneefoot.com/handkneefoot
+else
+    if [ -d $HOME/walt/Documents/HandKneeFoot/handkneefoot ]
+    then
+        cd $HOME/walt/Documents/HandKneeFoot/handkneefoot
+    fi
+fi
+
+ProdFolder="/home/wzjzus5/handkneefoot.com/handkneefoot"

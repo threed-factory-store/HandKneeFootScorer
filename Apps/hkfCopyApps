@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -f /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon ]
+then
+    . /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon
+fi
+
+echo "Copying apps"
+chmod +x /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/*
+cp /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/* /usr/local/bin
+
+echo "Setting file permissions"
+# ProdFolder is defined in mcgcommon
+chown --recursive wzjzus5 "${ProdFolder}"
+chmod --recursive 0755 "${ProdFolder}"
+
+echo "hkfCopyApps Done."

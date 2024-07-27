@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "hkfAppDown"
+if [ -f /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon ]
+then
+    . /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon
+fi
+
+Secret="dfvwet54345tregRG4554gtr9887fdgFGe34rge"
+
+php artisan down --refresh=30  --secret="${Secret}"
+
+echo "App is down.  To get in, go to https://HandKneeFoot.com/${Secret}"
+
+

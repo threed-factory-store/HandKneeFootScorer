@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -f /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon ]
+then
+    . /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon
+fi
+
+php artisan up
+
+echo "App is up."

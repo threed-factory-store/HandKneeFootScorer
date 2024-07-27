@@ -1,0 +1,72 @@
+#!/bin/bash
+
+echo "hkfAppPushToProduction"
+if [ -f /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon ]
+then
+    . /home/wzjzus5/handkneefoot.com/handkneefoot/Apps/hkfcommon
+fi
+
+if [ "$USER" != "wzjzus5" ]
+then
+    echo "Run 'su wzjzus5' first!"
+    echo "and run 'exit' after"
+    exit 1
+fi
+
+# ProdFolder is defined in hkfcommon
+PushToProdFolder="/home/wzjzus5/handkneefoot.com/PushToProduction"
+# zipFileRootName MUST match zipFileRootName in /home/Walt/Documents/Apps/hkfAppPushToProduction
+zipFileRootName="hkf_Prod_"
+
+DeleteOldReleases() {
+    echo "Deleting old releases"
+	daysToKeep=30
+	numberToKeep=30
+#	find "${folder}" -name "${folderSpec}" -type d -ctime +${daysToKeep} -exec rm -rf {} \;
+	
+	days_to_keep=$(date -d "${daysToKeep} days ago" "+%s")
+	stat -c "%Y %n" ${PushToProdFolder}/${zipFileRootName}*.zip | sort -nr | tail -n +${numberToKeep} | while read -r mtime name; do
+        if (( mtime < days_to_keep )); then
+            echo "remove $name"
+            rm "$name"
+        fi
+	done
+}
+
+# Get the latest zip file
+cd "${PushToProdFolder}"
+fileName=$(ls --sort=time hkf_Prod_* | head --lines=1)
+echo "About to push ${fileName} to Production"
+pause
+
+hkfAppDown
+
+cd "${ProdFolder}"
+if [ "${ProdFolder}" != "$PWD" ]
+then
+    echo "Not in Prod folder"
+    echo "ProdFolder='${ProdFolder}'"
+    echo "pwd='$PWD'"
+    echo "App is still down"
+    exit 3
+fi
+echo "Unzipping ${PushToProdFolder}/${fileName}"
+unzip -q -o "${PushToProdFolder}/${fileName}"
+if [ "$?" != "0" ]
+then
+    echo "Unzip failed"
+    echo "App is still down"
+    exit 4
+fi
+
+DeleteOldReleases
+
+hkfAppMigrate
+
+echo "Test the app using the URL that hkfAppDown showed you above."
+pause
+
+hkfAppUp
+
+echo "hkfAppPushToProduction Done!"
+echo "Now, exit from wzjzus5 and run hkfCopyApps"
