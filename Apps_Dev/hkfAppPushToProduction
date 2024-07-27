@@ -1,0 +1,74 @@
+#!/bin/bash
+
+. ~/Documents/Apps/hkfAppCommon
+
+echo "Clearing hkfApp caches"
+hkfApp artisan cache:clear
+hkfApp artisan config:clear
+
+NOW=$( date '+%F_%H-%M-%S' )
+RootFolder="/home/walt/Documents/HandKneeFoot"
+Dev="${RootFolder}/handkneefoot"
+
+cp /home/walt/Documents/Apps/hkf* ${Dev}/Apps_Dev/
+# This has FTP credentials in it.  No need to share them with the world.
+Apps_Dev_PushToProdApp="${Dev}/Apps_Dev/hkfAppPushToProduction"
+sed -i "s/^HOST=.*/HOST=xxx/g" "${Apps_Dev_PushToProdApp}"
+sed -i "s/^USER=.*/USER=xxx/g" "${Apps_Dev_PushToProdApp}"
+sed -i "s/^PASSWORD=.*/PASSWORD=xxx/g" "${Apps_Dev_PushToProdApp}"
+
+PushToProdBaseFolder="${RootFolder}/PushToProduction"
+PushToProd="${PushToProdBaseFolder}/${NOW}"
+mkdir -p "${PushToProd}"
+# zipFileRootName MUST match zipFileRootName in ${RootFolder}/hkf/Apps/hkfAppPushToProduction
+zipFileRootName="hkf_Prod_"
+zipFileBase="${zipFileRootName}${NOW}.zip"
+zipFile="${PushToProdBaseFolder}/${zipFileBase}"
+
+echo "Creating ${zipFile}"
+
+cp -r "${Dev}/." "${PushToProd}"
+#cp     ${PushToProd}/.env.prod ${PushToProd}/.env
+rm -rf ${PushToProd}/.devcontainer
+rm -rf ${PushToProd}/.git
+rm     ${PushToProd}/.git*
+rm -rf "${PushToProd}/.vscode"
+rm -rf ${PushToProd}/storage/logs/*
+
+cd "${PushToProd}"
+zip -mrq "${zipFile}" * .[^.]*
+
+if [ ! -f "${zipFile}" ]
+then
+	echo "Zip file not found '${zipFile}'"
+	exit 2
+fi
+
+rmdir "${PushToProd}"
+
+echo "========================================================================="
+echo "Pushing zip file to Prod"
+cd "${PushToProdBaseFolder}"
+# ftp 
+HOST=xxx
+USER=xxx
+PASSWORD=xxx
+
+ftp -inv $HOST <<EOF
+binary
+user "${USER}" "${PASSWORD}"
+put "${zipFileBase}"
+bye
+EOF
+
+echo "========================================================================="
+echo "Purging old releases"
+hkfAppPurgeReleaseFiles "${PushToProdBaseFolder}"
+
+
+echo "========================================================================="
+echo "Back on InMotionHosting:"
+echo "* Open a Root WHM Terminal"
+echo "* Run su wzjzus5"
+echo "* Run hkfAppPushToProduction"
+

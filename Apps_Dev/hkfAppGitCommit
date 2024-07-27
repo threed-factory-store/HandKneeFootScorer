@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. ~/Documents/Apps/hkfAppCommon
+
+Comment=$1
+
+if [ "$Comment" == "" ]
+then
+	echo "Give me a comment"
+	exit 1
+fi
+
+git add --all .
+git commit --all --message="${Comment}"
+git push
+

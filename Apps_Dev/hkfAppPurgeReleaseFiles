@@ -1,0 +1,36 @@
+#!/bin/bash
+
+. ~/Documents/Apps/ask
+
+folder="$1"
+echo "folder='${folder}'"
+
+if [ "${folder}" == "" ]
+then
+	echo "Usage: purgeFiles folder"
+	exit 1
+fi
+
+days=30
+
+cmdFiles="find ${folder} -name '*.zip' -type f -mtime +${days}"
+cmdFolders="find ${folder} -mindepth 1 -maxdepth 1 -type d -mtime +${days}"
+
+countFiles=$($cmdFiles -printf '.' | wc -c)
+countFolders=$($cmdFolders -printf '.' | wc -c)
+
+if [[ $countFiles > 0 || $countFolders > 0 ]]
+then
+	echo "===================================================================="
+	echo "$countFiles Files and $countFolders folders we're about to delete:"
+	$cmdFiles
+	$cmdFolders
+
+	if ask "Delete these files and folders?" N; then
+		$cmdFiles -delete 
+		$cmdFolders -exec rm --recursive --force {} +
+	fi
+else
+	echo "Nothing to purge from $folder"
+fi
+

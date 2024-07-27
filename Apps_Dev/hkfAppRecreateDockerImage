@@ -1,0 +1,6 @@
+#!/bin/bash
+
+hkfApp down
+hkfApp build --no-cache
+hkfApp up -d --force-recreate
+

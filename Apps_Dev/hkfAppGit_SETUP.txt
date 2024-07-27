@@ -1,0 +1,22 @@
+# Make sure ssh-agent is running
+eval "$(ssh-agent -s)"
+
+# Generate our key
+ssh-keygen -t rsa -C "walt+github@wzjz.us" -f ~/.ssh/id_github2
+
+# Add our private key
+ssh-add ~/.ssh/id_github2
+
+gh auth login
+
+gh auth refresh -h github.com -s admin:public_key
+
+# Tell GitHub our public key
+gh ssh-key add ~/.ssh/id_github2.pub
+
+git pull https://github.com/threed-factory-store/HandKneeFootScorer main
+git push --set-upstream origin main
+
+
+
+

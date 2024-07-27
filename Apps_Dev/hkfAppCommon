@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+cd /home/walt/Documents/HandKneeFoot/handkneefoot
+
+FailIfContainsUnderscores() {
+	string=$1
+	if [[ $string =~ ^[_]+$ ]]; then
+		echo "hkfAppCommon.FailIfContainsUnderscores(): Name contains underscores."
+		exit 1
+	fi
+}
+
+FailIfNotCamelCase() {
+	name=$1
+	FailIfContainsUnderscores $name
+	nameCamel="${name^}"
+	if [ "${name}" == "" ] || [ "${nameCamel}" != "${name}" ]; then
+		echo "hkfAppCommon.FailIfNotCamelCase(): Please give me a CamelCase name."
+		exit 1
+	fi
+}
+
+CamelCaseToUnderscores() {
+	name=$1
+	echo "${name}" | sed 's/\([A-Z]\)/_\L\1/g;s/^_//'
+}
+
+GetNames() {
+	if [ "$1" == "" ]; then
+		echo "hkfAppCommon.GetNames(): No name provided."
+		exit 1
+	else
+		name=$1
+		FailIfNotCamelCase $name
+		nameUnderscores=$(CamelCaseToUnderscores $name)
+	fi
+}

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. ~/Documents/Apps/hkfAppCommon
+
+if [ "$1" == "" ]; then
+	./vendor/bin/sail up -d
+	hkfAppExec npm run &
+else
+	./vendor/bin/sail "$@"
+fi

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+hkfApp down
+hkfApp up -d --force-recreate
+

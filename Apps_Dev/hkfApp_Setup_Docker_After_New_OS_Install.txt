@@ -1,0 +1,10 @@
+Install docker
+Add walt to the docker group
+make /home/walt/Documents/HandKneeFoot/handkneefoot/vendor/bin/* executable
+make /home/walt/Documents/HandKneeFoot/handkneefoot/vendor/laravel/sail/bin/* executable
+stop Apache:   		
+	sudo systemctl stop apache2
+disable Apache:		
+	sudo update-rc.d apache2 disable
+run hkfAppRecreateDockerImage
+run hkfAppBuildAssets
