@@ -108,6 +108,16 @@ function GetRoundTotals(roundNumber, teamNum, ignoreErrors) {
             val = parseInt(val)
             if (isNaN(val) && !ignoreErrors)
                 throw new BreakError("", elem)
+
+            var min = elem.getAttribute("min");
+            var max = elem.getAttribute("max");
+            var step = elem.getAttribute("step");
+            val = cleanNumber(val, min, max, step)
+            if (val != elem.value && step && !ignoreErrors) {
+                let fieldLabel = elem.getAttribute("FieldLabel")    
+                throw new BreakError(fieldLabel+" only accepts multiples of "+step, elem)
+            }
+    
             result += parseInt(elem.value) || 0
         }
     });

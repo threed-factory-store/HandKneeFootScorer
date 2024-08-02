@@ -40,13 +40,19 @@
 </div>
 <script>
     function OnRoundFieldChange(evt) {
-        value = evt.target.value
-        var min = evt.target.getAttribute("min");
-        var max = evt.target.getAttribute("max");
-        var step = evt.target.getAttribute("step");
+        let target = evt.target 
+        let value = target.value
+        var min = target.getAttribute("min");
+        var max = target.getAttribute("max");
+        var step = target.getAttribute("step");
 
         value = cleanNumber(value, min, max, step)
-        evt.target.value = value
+        if (value != target.value) {
+            let fieldLabel = target.getAttribute("FieldLabel")
+
+            alert(fieldLabel+" only accepts multiples of "+step)
+            target.focus()
+        }
 
         UpdateTotals(true)
     }

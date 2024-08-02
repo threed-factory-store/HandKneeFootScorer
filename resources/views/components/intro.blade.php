@@ -1,6 +1,7 @@
 <p><h3>Hand (Knee) and Foot Scorer</h3></p>
 <p>Hello,</p>
-<p>We're here to help you score a "Hand and Foot" or "Hand, Knee, and Foot" game.</p>
+<p>We're here to help you score a "Hand and Foot" or "Hand, Knee, and Foot" game.<br/>  If you're using a phone, this app works best if you turn your phone sideways.</p>
+<p></p>
 <p>First, we need to know which game you're playing:</p>
 
 <form onsubmit="return IntroNoSubmit(event)">
@@ -211,6 +212,5 @@
             if (teamName)
                 document.getElementById("introTeamName"+i).value = teamName
         }
-
     })
 </script>
