@@ -1,7 +1,7 @@
 Install docker
-Add walt to the docker group
-make /home/walt/Documents/HandKneeFoot/handkneefoot/vendor/bin/* executable
-make /home/walt/Documents/HandKneeFoot/handkneefoot/vendor/laravel/sail/bin/* executable
+Add me to the docker group
+make /home/${$USER}/Documents/HandKneeFoot/handkneefoot/vendor/bin/* executable
+make /home/${$USER}/Documents/HandKneeFoot/handkneefoot/vendor/laravel/sail/bin/* executable
 stop Apache:   		
 	sudo systemctl stop apache2
 disable Apache:		

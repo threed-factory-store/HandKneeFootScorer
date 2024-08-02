@@ -97,6 +97,14 @@ function cleanNumber(value, min, max, step) {
     return result
 }
 
+function GetFieldLabel(roundNumber, rowNumber) {
+    let labelElem = document.getElementById(rowNumber+"_"+roundNumber+"_Label")
+    let result = ""
+    if (labelElem)
+        result = labelElem.innerText
+    return result
+}
+
 function GetRoundTotals(roundNumber, teamNum, ignoreErrors) {
     let result = 0
     fields = document.getElementsByClassName("Round"+roundNumber+"Team"+teamNum+"Field")
@@ -115,7 +123,7 @@ function GetRoundTotals(roundNumber, teamNum, ignoreErrors) {
             val = cleanNumber(val, min, max, step)
             if (val != elem.value && step && !ignoreErrors) {
                 let fieldLabel = elem.getAttribute("FieldLabel")    
-                throw new BreakError(fieldLabel+" only accepts multiples of "+step, elem)
+                throw new BreakError('"'+fieldLabel+'" only accepts multiples of '+step, elem)
             }
     
             result += parseInt(elem.value) || 0
@@ -291,7 +299,9 @@ function UpdateRoundTotals(roundNumber, ignoreErrors, wereInTheRound) {
         } catch (e) {
             let result = false
             if (!(e instanceof BreakError)) throw e;
-            let fieldLabel = e.elem.getAttribute("FieldLabel")
+            let fieldLabel = GetFieldLabel(roundNumber, e.elem.getAttribute("RowNumber"))
+            if (!fieldLabel)
+                fieldLabel = e.elem.getAttribute("FieldLabel")
             
             let inRound = ""
             if (!wereInTheRound)
